@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>bootstrap</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
+    <style>
+    .left {
+        height: 200px;
+        background-color: red;
+    }
+
+    .center {
+        height: 200px;
+        background-color: orange;
+    }
+
+    .right {
+        height: 200px;
+        background-color: yellow;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-3 col-sm-3 col-md-3 left">页面的左侧内容</div>
+            <div class="col-xs-9 col-sm-9 col-md-6 center">页面的中间内容</div>
+            <div class="col-md-3 right hidden-xs hidden-sm">页面的右侧内容</div>
+        </div>
+    </div>
+    <!-- 
+	页面布局：
+		PC端：支持电脑
+		移动端：支持手机
+		响应式：电脑和手机都能访问（bootstrap)
+
+		如果使用响应式优点：
+			1. 一套界面，多端使用
+
+		缺点：
+			1. 大量使用媒体查询，让代码复杂化
+			2. css文件大小增大=>流量增大=>带宽增大=>钱多
+     -->
+</body>
+
+</html>
