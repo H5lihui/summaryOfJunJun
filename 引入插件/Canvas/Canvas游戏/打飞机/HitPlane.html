@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<style>
+			body{text-align:center}
+			canvas{border:1px solid red;cursor:pointer}
+		</style>
+		<!--加载动画播放专用方法-->
+		<script src="requestNextAnimationFrame.js"></script>
+		<!--加载帧率计算方法-->
+		<script src="windowtocanvas.js"></script>
+		<!--加载windowtocanvas-->
+		<script src="countFps.js"></script>
+		<!--加载精灵构造方法-->
+		<script src="Sprite.js"></script>
+		<!--加载背景移动精灵对象-->
+		<script src="bgSprite.js"></script>
+		<!--加载敌机构造方法-->
+		<script src="Enemy.js"></script>
+		<!--加载我方飞机构造方法-->
+		<script src="plane.js"></script>
+		<!--加载我方子弹构造方法-->
+		<script src="Bullet.js"></script>
+
+		
+		<!--加载我方飞机精灵-->
+		<!--加载敌方大飞机精灵-->
+		<!--加载敌方小飞机精灵-->
+	</head>
+	<body>
+		<canvas id="canvas" width="320" height="568">
+			该浏览器不支持canvas元素
+		</canvas>
+		<script>
+			//获取当前页面的canvas元素
+			var canvas=document.getElementById('canvas');
+			//获取绘图环境
+			var context=canvas.getContext('2d');
+			//产生敌机
+			var sprites=[
+					createEnemy('samllEnemy'),
+					createEnemy('samllEnemy'),
+					createEnemy('samllEnemy'),
+					createEnemy('samllEnemy'),
+					createEnemy('middleEnemy'),
+					createEnemy('bigEnemy')
+					];
+					
+			var myPlane=createPlane('plane');
+			//添加我方飞机	
+			sprites.push(myPlane);
+
+			//飞机添加时间记录点
+			var smallEnemyTime=0;
+			var middleEnemyTime=0;
+			var bigEnemyTime=0;
+			var bulletTime=0;
+			//分数
+			var score=0;
+			
+			
+			//鼠标相关事件
+			var mouseDown=false;
+			canvas.onmousedown=function(){
+				mouseDown=true;
+				
+			}
+			
+			canvas.onmouseup=function(){
+				mouseDown=false;
+				
+			}
+			//改变我方飞机位置
+			canvas.onmousemove=function(e){
+				if(mouseDown){
+					e=e||window.event;
+					var point=windowToCanvas(this,e.clientX,e.clientY);
+					myPlane.left=point.x-myPlane.width/2;
+					myPlane.top=point.y-myPlane.height/2;
+				}
+				
+			}
+			
+			
+			//图像绘制动画
+			function animate(time){
+				//清空画布
+				context.clearRect(0,0,canvas.width,canvas.height);
+				//执行动画精灵
+				
+				//绘制背景  静态背景
+				//var bgPainter=new ImagePainter('gameArts.png');
+				//var bgSprite=new Sprite('bg',bgPainter);
+				//bgSprite.width=512;
+				//bgSprite.height=1024;
+				//bgSprite.paint(context);
+				//----------------------------
+				//使用自定义背景精灵
+				
+				
+				drawBackground(context,time);
+				
+				//添加小飞机
+				if(time-smallEnemyTime>1500){
+					sprites.push(createEnemy('samllEnemy'));
+					sprites.push(createEnemy('samllEnemy'));
+					sprites.push(createEnemy('samllEnemy'));
+					smallEnemyTime=time;
+				}
+				
+				//添加中型飞机
+				if(time-middleEnemyTime>3000){
+					sprites.push(createEnemy('middleEnemy'));
+					middleEnemyTime=time;
+				}
+				
+				
+				//添加大型飞机
+				if(time-bigEnemyTime>15000){
+					sprites.push(createEnemy('bigEnemy'));
+					bigEnemyTime=time;
+				}
+				
+				//子弹增加速度
+				if(time-bulletTime>150){
+					sprites.push(createBullet('Bullet',myPlane.left+myPlane.width/2-3,myPlane.top-20));
+					bulletTime=time;
+				}
+				
+				
+				
+				
+				
+				
+				//更新精灵状态
+				
+				for(var i=0;i<sprites.length;i++){
+					sprites[i].update(context,time);
+					if(sprites[i].visible==false){
+						//删除前更新分数
+						if(sprites[i].name=='samllEnemy' || sprites[i].name=='middleEnemy' || sprites[i].name=='bigEnemy'){
+							score+=sprites[i].score;
+						}
+						
+						//删除死亡飞机
+						sprites.splice(i,1);
+					}
+				}
+				
+				//执行精灵动作
+				
+				for(var i=0;i<sprites.length;i++){
+					//判断子弹是否击中敌机
+					if(sprites[i].name=='Bullet'){
+						for(j=0;j<sprites.length;j++){
+							//判断子弹是否触碰敌机
+								if(sprites[j].name=='samllEnemy' || sprites[j].name=='middleEnemy' || sprites[j].name=='bigEnemy'){
+									if((sprites[i].left+(sprites[i].width/2))>=sprites[j].left && (sprites[i].left+sprites[i].width/2)<=(sprites[j].left+sprites[j].width) && (sprites[i].top>=sprites[j].top) && sprites[i].top<=sprites[j].top+sprites[j].height){
+										//飞机中弹生命值减少(飞机死亡)
+										if(sprites[j].hp>=1){
+											sprites[j].hp-=1;
+											//子弹消失（击中敌人，且敌人气血减少情况下，避免集中死亡飞机子弹消失）
+											sprites[i].visible=false;
+										}
+
+									}
+								} 
+							
+						}
+					}
+					
+					/*
+					//判断自己是否与敌机相撞
+					if(sprites[i].name=='plane'){
+						for(j=0;j<sprites.length;j++){
+							//判断自己是否触碰敌机 
+							//敌机在我方左侧
+							if(
+								sprites[i].left-sprites[j].left+sprites[j].width<0 && sprites[i].top-sprites[j].top+sprites[j].height<0 
+								
+
+							){
+							
+							}
+							
+						
+							
+						}
+					}
+					*/
+					
+					//绘制精灵~
+					sprites[i].paint(context,time);
+				}
+				
+				//测试当前页面对象数量 
+				//alert(sprites.length);
+				context.fillText('页面对象总数:'+sprites.length,120,550);
+				
+				//分数记录
+				context.fillText('总分:'+score,200,40);
+				
+				
+				context.font='20px 黑体';
+				context.fillText('FPS:'+countFps(),20,40);
+				//继续调用动画循环
+				window.requestNextAnimationFrame(animate);
+			}
+			//开启动画循环
+			window.requestNextAnimationFrame(animate);
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>画图板</title>
+		<script src='./index.js'></script>
+		<link rel="stylesheet" href="./index.css">
+	</head>
+	<body>
+		
+		<div id="container">
+			<section id="content">
+				<ul class="toolbox" id="toolbox">
+					<li class="img" id="img">
+						<h4>图像</h4>
+						<ul>
+							<li>							
+								<button class="but" id="save">保存图片</button>	
+							</li>
+							<li>
+								<button class="but" id="clearcan">清除画布</button>	
+							</li>
+						</ul>
+					</li>
+					<li class="tool"  id="tool">
+						<h4>工具</h4>
+						<ul>						
+							<li id="drawingPens">
+								<img src="./images/Brush.png" alt="">
+							</li>
+							<li id="eraser">
+								<img src="./images/Eraser.png" alt="">
+							</li>
+							<li id="paintBucket">
+								<img src="./images/Paint.png" alt="">
+							</li>
+							<li id="eyedropper">
+								<img src="./images/Straw.png" alt="">
+							</li>
+							<li id="textEntry">
+								<img src="./images/text.png" alt="">
+							</li>
+							<li id="magnifier">
+								<img src="./images/Magnifier.png" alt="">
+							</li>
+						</ul>
+					</li>
+					<li class="shape" id="shape">
+						<h4>形状</h4>
+						<ul>
+							<li id="linear">
+								<img src="./images/line.png" alt="">
+							</li>				
+							<li id="georama">
+								<img src="./images/arc.png" alt="">
+							</li>
+							<li id="outlinedRectangle">
+								<img src="./images/rect.png" alt="">
+							</li>
+							<li id="hollowTriangular">
+								<img src="./images/poly.png" alt="">
+							</li>
+							<li id="solidDisc">
+								<img src="./images/arcfill.png" alt="">
+							</li>
+							<li id="filledRectangle">
+								<img src="./images/rectfill.png" alt="">
+							</li>
+						</ul>	
+					</li>
+					<li class="size"  id="size">
+						<h4>粗细</h4>
+						<ul>
+							<li><img src="./images/line1px.png" alt=""></li>
+							<li><img src="./images/line3px.png" alt=""></li>
+							<li><img src="./images/line5px.png" alt=""></li>
+							<li><img src="./images/line8px.png" alt=""></li>
+						</ul>		
+					</li>
+					<li class="color"  id="color">
+						<h4>颜色</h4>
+						<ul>
+							<li></li><li></li><li></li><li></li><li></li>
+							<li></li><li></li><li></li><li></li><li></li>
+						</ul>
+					</li>
+				</ul>
+				<div class="canvas">
+					<canvas  id="canvas" width="800" height="540">
+						你的浏览器不支持canvas,请更换其他浏览器。。
+					</canvas>
+				</div>
+			</section>
+			<footer>
+				.net.com.con.com
+			</footer>
+		</div>	
+	</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    
+    #box {
+        width: 500px;
+        height: 500px;
+        border: 1px solid red;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .eraser {
+        width: 20px;
+        height: 20px;
+        background: red;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <canvas id="myCanvas" width="500" height="500"></canvas>
+        <div class="eraser"></div>
+    </div>
+    <button>橡皮擦</button>
+    <script>
+    // 绘制三角形
+    // 1.获取canvas对象
+    var myCanvas = document.querySelector('#myCanvas');
+    var btn = document.querySelector('button');
+    var eraser = document.querySelector('.eraser');
+
+    // 2.获取绘图环境
+    var ctx = myCanvas.getContext('2d');
+
+    // 定义变量，控制鼠标是否被按下
+    var isDown = false;
+    // 定义变量，控制是否擦除效果
+    var isClear = false;
+    // 定义变量，控制橡皮擦是否显示
+    var isShow = false;
+
+    btn.onclick = function() {
+        if (isShow) {
+            isShow = false;
+            this.innerHTML = '橡皮擦';
+        } else {
+            isShow = true;
+            this.innerHTML = '取消橡皮擦';
+        }
+    }
+
+    eraser.onmousedown = function() {
+        isClear = true;
+    }
+    eraser.onmouseup = function() {
+        isClear = false;
+    }
+
+    // 鼠标按下去，获取鼠标在canvas内的相对位置
+    myCanvas.onmousedown = function(ent) {
+        console.log(111);
+        // 鼠标按下去，isDown变为真
+        isDown = true;
+
+        // 鼠标按下去的点就是绘制的起始点
+        var e = ent || event;
+
+        // 相对位置
+        var x = e.pageX - myCanvas.offsetLeft;
+        var y = e.pageY - myCanvas.offsetTop;
+
+        // 重新开启路径
+        ctx.beginPath();
+        // 起始点移动到指定的位置
+        ctx.moveTo(x, y);
+    }
+
+    myCanvas.onmousemove = function() {
+        // 判断是否需要显示橡皮擦
+        if (isShow) {
+            eraser.style.display = 'block';
+        }
+    }
+
+    document.onmousemove = function(ment) {
+        // 判断鼠标是否被按下
+        if (isDown) {
+            var me = ment || event;
+
+            // 移动之后的位置
+            var xx = me.pageX - myCanvas.offsetLeft;
+            var yy = me.pageY - myCanvas.offsetTop;
+
+            // 移动到指定的点
+            ctx.lineTo(xx, yy);
+
+            // 每次的绘制都以moveTo()的点为起点
+            // ctx.closePath();
+
+            // 绘制
+            ctx.stroke();
+        }
+
+        // 橡皮擦显示
+        if (isShow) {
+            var me = ment || event;
+
+            // 移动之后的位置
+            var xx = me.pageX - myCanvas.offsetLeft;
+            var yy = me.pageY - myCanvas.offsetTop;
+
+            eraser.style.left = xx - eraser.offsetWidth / 2 + 'px';
+            eraser.style.top = yy - eraser.offsetHeight / 2 + 'px';
+        }
+
+        console.log(isClear);
+        // 判断是否是擦除效果
+        if (isClear) {
+            ctx.clearRect(eraser.offsetLeft, eraser.offsetTop, 20, 20);
+        }
+    }
+
+    document.onmouseup = myCanvas.onmouseup = function() {
+        // 鼠标抬起，将isDown改为真
+        isDown = false;
+    }
+
+    /*
+    // 需求：在网页上绘制图形
+    // 分析需求：当鼠标在canvas画布上按下去并移动，绘制直线
+    myCanvas.onmousedown = function(ent) {
+        // 鼠标按下去的点就是绘制的起始点
+        var e = ent || event;
+
+        // 相对位置
+        var x = e.pageX - myCanvas.offsetLeft;
+        var y = e.pageY - myCanvas.offsetTop;
+
+        // 起始点移动到指定的位置
+        ctx.moveTo(x, y);
+
+        // 开始移动
+        document.onmousemove = function(ment) {
+            var me = ment || event;
+
+            // 移动之后的位置
+            var xx = me.pageX - myCanvas.offsetLeft;
+            var yy = me.pageY - myCanvas.offsetTop;
+
+            // 移动到指定的点
+            ctx.lineTo(xx, yy);
+
+            // 绘制
+            ctx.stroke();
+        }
+
+        document.onmouseup = myCanvas.onmouseup = function() {
+            document.onmousemove = null;
+        }
+    }
+    */
+    // 作业：橡皮擦
+    </script>
+</body>
+
+</html>

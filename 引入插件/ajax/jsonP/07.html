@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../../lib/jquery-1.11.1/jquery.min.js"></script>
+	<style>	
+		.box{width: 500px;height: 200px;border:1px solid green;}
+	</style>
+</head>
+<body>
+	
+	<div class="box"></div>
+	<button>请求</button>
+
+
+	<script type="text/javascript">
+		
+		$('button').click(function(){
+			$.ajax({
+				type:'post',
+				//  不能跨域
+				url:'http://127.0.0.1/H5_35/jsonP/07.php',
+				dataType:'json',
+				// 成功的回调函数
+				success:function(data){
+					// console.log(data.name)
+					$('.box').html(data.name);
+				}
+			})
+
+		});
+
+	</script>	
+</body>
+</html>

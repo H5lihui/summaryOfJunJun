@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<style type="text/css">
+	#box{width: 400px;height: 200px;border:1px solid red;}
+</style>
+</head>
+<body>
+<button onclick="request()">request</button>	
+<div id="box"></div>
+<script type="text/javascript">
+
+	function request(){
+		var xhr = new XMLHttpRequest();
+
+		// ajax 不能够跨域请求 文件
+		xhr.open('get','http://localhost/H5_35/jsonP/01.php');
+
+		xhr.send();
+
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4 && xhr.status == 200){
+
+				document.getElementById('box').innerHTML = xhr.responseText
+
+			}
+			
+		}
+
+
+	}	
+
+
+</script>
+</body>
+</html>

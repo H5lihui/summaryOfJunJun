@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    #box {
+        width: 500px;
+        height: 500px;
+        position: relative;
+    }
+    
+    #shadow {
+        width: 200px;
+        height: 200px;
+        background: red;
+        opacity: 0.3;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <canvas id="myCanvas" width="500" height="500" style="border:1px solid red;"></canvas>
+        <div id="shadow"></div>
+    </div>
+    <input type="file">
+    <br>
+    <br> 阴影区的范围：
+    <input type="range" id="size" min="1" max="10" value="5">
+    <br>
+    <br> 像素点组的大小：
+    <input type="range" id="group" min="1" max="10" value="5">
+    <script>
+    // 需求：点击按钮，将选中的图片添加到canvas画布中
+    /*
+        1.input[type="file"]的改变事件
+        2.通过文件读取对象读取选中的文件
+        3.读取结束（创建图片对象），通过canvas将图片写入到内部
+        4.鼠标在div#box内的移入和移出事件
+        5.鼠标在div#box内的点击事件
+        6.大小和像素组个数input的改变事件
+     */
+    // 1.获取对象
+    var input = document.getElementsByTagName('input')[0];
+    var box = document.getElementById('box');
+    var shadow = document.getElementById('shadow');
+    var size = document.getElementById('size');
+    var group = document.getElementById('group');
+
+    // 2.借助input的onchange事件将图片获取
+    var bool = false;
+    input.onchange = function(e) {
+        // 1.获取文件对象
+        var file = e.target.files[0];
+
+        // 2.实例化文件读取对象
+        var reader = new FileReader();
+
+        // 3.读取数据
+        reader.readAsDataURL(file);
+
+        // 4.读取结束
+        reader.onload = function() {
+            // this.result 这就是base64编码格式的图片
+            var img = document.createElement('img');
+            img.src = this.result;
+
+            img.onload = function() {
+                bool = true;
+                // 1.获取canvas画布
+                var myCanvas = document.getElementById('myCanvas');
+
+                // 2.获取绘图环境
+                var ctx = myCanvas.getContext('2d');
+
+                // 3.将读取的图片写入到canvas画布中
+                ctx.drawImage(img, 0, 0, myCanvas.width, myCanvas.height);
+            }
+        }
+    }
+
+    // 当鼠标在div#box上移动的时候，div#shadow跟着移动
+    box.onmouseover = function() {
+        // 当图片加载了这里才显示shadow
+        if (bool) {
+            shadow.style.display = 'block';
+
+
+            box.onmousemove = function(ent) {
+                var e = ent || event;
+
+                // 鼠标在div#box内的相对位置
+                var x = e.pageX - box.offsetLeft;
+                var y = e.pageY - box.offsetTop;
+
+                // 获取shadow的left和top的值
+                var left = x - shadow.offsetWidth / 2;
+                var top = y - shadow.offsetHeight / 2;
+
+                if (left < 0) {
+                    left = 0;
+                } else if (left > box.offsetWidth - shadow.offsetWidth) {
+                    left = box.offsetWidth - shadow.offsetWidth;
+                }
+
+                if (top < 0) {
+                    top = 0;
+                } else if (top > box.offsetHeight - shadow.offsetHeight) {
+                    top = box.offsetHeight - shadow.offsetHeight;
+                }
+
+                // 赋值
+                shadow.style.left = left + 'px';
+                shadow.style.top = top + 'px';
+            }
+        }
+    }
+
+    box.onmouseout = function() {
+        shadow.style.display = 'none';
+    }
+
+    // 点击，打马赛克
+    var groupNum = 10; // 每组默认为10个像素点
+    box.onclick = function() {
+        var myCanvas = document.getElementById('myCanvas');
+        var ctx = myCanvas.getContext('2d');
+
+        // 获取马赛克的起始点
+        var x = shadow.offsetLeft;
+        var y = shadow.offsetTop;
+
+        // 获取马赛克的宽度
+        var w = shadow.offsetWidth;
+        var h = shadow.offsetHeight;
+
+        Masaike(ctx, x, y, w, h, groupNum);
+    }
+
+    // 范围
+    size.onchange = function() {
+        shadow.style.width = this.value * 40 + 'px';
+        shadow.style.height = this.value * 40 + 'px';
+    }
+
+    // 像素组大小
+    group.onchange = function() {
+        // 设置一个全局变量，让onchange事件和onclick事件共通数据
+        // alert(this.value);
+        groupNum = this.value * 2;
+    }
+
+    /*
+     * 功能：绘制马赛克（模糊，像素点放大）
+     * @param object obj 绘制环境对象
+     * @param number x 起始点横坐标
+     * @param number y 起始点纵坐标
+     * @param number w 马赛克区域的宽度
+     * @param number h 马赛克区域的高度
+     * @param number group 马赛克区域每组的个数
+     * @return null 没有返回值
+     */
+    function Masaike(ctx, x, y, w, h, group) {
+        // 1.获取指定区域的像素点的数组
+        var obj = ctx.getImageData(x, y, w, h);
+
+        // 2.以组为单位进行循环，分别获取每组中随机的一个点坐标
+        for (var tr = 0; tr < obj.width / group; tr++) {
+            for (var td = 0; td < obj.height / group; td++) {
+                // 获取随机的坐标点
+                var rand_x = tr * group + rand(0, group - 1);
+                var rand_y = td * group + rand(0, group - 1);
+
+                // 根据随机的坐标点获取样式
+                var color = getPixelColor(obj, rand_x, rand_y);
+
+                // 以每组的个数为单位进行循环
+                // 将随机的颜色值赋给同组的其他兄弟像素点
+                for (var i = 0; i < group; i++) {
+                    for (var j = 0; j < group; j++) {
+                        var xx = tr * group + i;
+                        var yy = td * group + j;
+                        setPixelColor(obj, xx, yy, color);
+                    }
+                }
+            }
+        }
+
+        // 3.将修改之后的颜色返回给canvas
+        ctx.putImageData(obj, x, y);
+    }
+
+    /*
+     * 获取随机数
+     */
+    function rand(m, n) {
+        return Math.floor(Math.random() * (n - m + 1)) + m;
+    }
+
+    /*
+     * 功能：获取指定点像素点的四个颜色值
+     * @param object obj 这是getImageData()|createImageData()返回的对象
+     * @param number x 指定像素点的横坐标点
+     * @param number y 指定像素点的纵坐标点
+     * @return array 返回获取的颜色值
+     */
+    function getPixelColor(obj, x, y) {
+        // 定义数组：准备接收下面获取的像素点的颜色值
+        var color = [];
+
+        // 获取指定像素点的索引位置
+        var index = y * obj.width + x;
+
+        // 根据索引位置获取颜色值
+        color.push(obj.data[4 * index + 0]);
+        color.push(obj.data[4 * index + 1]);
+        color.push(obj.data[4 * index + 2]);
+        color.push(obj.data[4 * index + 3]);
+
+        // 将获取的颜色数组返回
+        return color;
+    }
+
+    /*
+     * 功能：设置指定像素点的颜色值
+     * @param object obj 这是getImageData()|createImageData()的返回结果
+     * @param number x 这是指定像素点的横坐标点
+     * @param number x 这是指定像素点的纵坐标点
+     * @param array color 设置的颜色值
+     * @return null 无返回值
+     */
+    function setPixelColor(obj, x, y, color) {
+        // 获取指定像素点的索引位置
+        var index = y * obj.width + x;
+
+        // 根据索引位置获取颜色值
+        obj.data[4 * index + 0] = color[0];
+        obj.data[4 * index + 1] = color[1];
+        obj.data[4 * index + 2] = color[2];
+        obj.data[4 * index + 3] = color[3];
+    }
+    </script>
+</body>
+
+</html>

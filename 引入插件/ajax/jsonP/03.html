@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<button onclick="request()">request</button>	
+	<script type="text/javascript">
+
+		// 点击事件
+		function request(){
+			// 创建 script 的节点对象
+			var scriptNode = document.createElement('script');
+			// 给 script 节点添加 src 属性
+			// scriptNode.src = 'http://127.0.0.1/H5_35/jsonP/02.js';
+			// scriptNode.src = 'http://127.0.0.1/H5_35/jsonP/test';
+			
+			scriptNode.src = 'http://127.0.0.1/H5_35/jsonP/03.php';
+
+			// 把创建的节点对象 放到 文档
+			document.body.appendChild(scriptNode);
+
+
+			
+
+		}
+	</script>
+</body>
+</html>

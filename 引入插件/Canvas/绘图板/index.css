@@ -1,0 +1,137 @@
+ul,body{
+	margin:0;
+	padding:0;
+	font:16px 微软雅黑;
+	color:#111;
+	background:#abcdef;
+}
+#container{
+	width:820px;
+	margin:0 auto;
+	text-align:center;
+}
+#content .toolbox{
+	background:#ddd;
+	width:800px;
+	height:100px;
+	border:10px solid #ccc;
+}
+#content .toolbox>li{
+	list-style:none;
+	float:left;
+	width:159px;
+	border-right:1px solid #666;
+}
+#content .toolbox .tool img,.toolbox .shape img{
+	width:20px;
+	height:20px ;
+}
+
+#content li h4{
+	border-bottom:1px solid #bbb;
+	
+	margin:0;
+}
+#content .toolbox .img ul{
+	text-align:left;
+	padding:17px 0;
+	width:120px;
+	padding-left:29px;
+	list-style:square inside;
+}
+
+.toolbox .img button{
+	background:none;
+	border:1px solid #ccc;
+}
+.toolbox .img .pubColor{
+	background:#FF0;
+}
+.toolbox .img button:hover{
+	border:1px solid #fff;
+}
+.toolbox .tool ul,.toolbox .shape ul{
+	list-style:none;
+	padding:17px 15px;
+	display:table;
+}
+.toolbox .tool ul li,.toolbox .shape ul li{
+	cursor:pointer;
+	border:1px solid #ccc;
+	float:left;
+	width:40px;
+	height:20px;
+}
+.toolbox .tool ul li:hover,.toolbox .shape ul li:hover{
+	border:1px solid #fff;
+}
+.toolbox .size ul{
+	padding:5px 30px;
+	list-style:none;
+}
+.toolbox .size ul li{
+	cursor:pointer;
+	height:15px;
+	border:1px solid #ddd;
+	line-height:15px;
+}
+.toolbox .size ul li:hover,.toolbox .color li:hover{
+	border:1px solid #fcc;
+}
+.toolbox .color ul{
+	padding:11px 9px;
+	display:table;
+}
+.toolbox .color li{
+	cursor:pointer;
+	list-style:none;
+	width:20px;
+	height:20px;
+	float:left;
+	margin:3px;
+	background:#ff0000;
+	border:1px solid #000;
+}
+.toolbox .color ul li:nth-child(2){
+	background:#008000;
+}
+.toolbox .color ul li:nth-child(3){
+	background:#00F;
+}
+.toolbox .color ul li:nth-child(4){
+	background:#FF0;
+}
+.toolbox .color ul li:nth-child(5){
+	background:#FFF;
+}
+.toolbox .color ul li:nth-child(6){
+	background:#000;
+}
+.toolbox .color ul li:nth-child(7){
+	background:#FFC0CB;
+}
+.toolbox .color ul li:nth-child(8){
+	background:#800080;
+}
+.toolbox .color ul li:nth-child(9){
+	background:#ABCDEF;
+}
+.toolbox .color ul li:nth-child(10){
+	background:#FFA500;
+}
+
+.pubColor{
+	background:#FF0;
+}
+.toolbox .color .pubColor{
+	border:1px solid #fff;
+}
+.canvas{
+	width:800px;
+	height:540px;
+	background:#fff;
+	border:10px solid #ccc;
+	border-top:none;
+	cursor:url(./images/drawingPens1.PNG), default;
+	
+}

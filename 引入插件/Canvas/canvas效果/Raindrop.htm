@@ -1,0 +1,152 @@
+<html>
+<head>
+<title>雨</title>
+<style>
+body{
+background-color:rgb(220,220,220);
+}
+</style>
+<script>
+ var Amount=0; //增加雨滴的数量
+ var ctx;  //canvas上下文
+ var raindrops=[]; //存放雨滴的数组
+ var friction=0.0018; //雨滴所受摩擦力
+ var araindrop; //用于临时保存新加入雨滴的初始信息
+ var sx1;
+ var sy1;
+ var speedx1;
+ var speedy1;
+ var size1;
+ var gravity;
+ 
+  //雨滴类的定义
+ function Raindrop(sx,sy,speedx,speedy,size,sizea,sizeb,sizec,sized,sizee,sizef,sizeg){
+  this.sx=sx;	 //雨滴的位置
+  this.sy=sy;
+  this.speedx=speedx; //雨滴的速度
+  this.speedy=speedy;
+  this.size=size;
+  this.sizea=sizea;
+  this.sizeb=sizeb;	
+  this.sizec=sizec;	
+  this.sized=sized;	
+  this.sizee=sizee;	
+  this.sizef=sizef;	
+  this.sizeg=sizeg;
+  this.draw=drawraindrop; //画雨滴的函数
+  this.move= moveraindrop;	//移动雨滴的函数
+  this.gravity=0.0002*size;	//雨滴所受的重力
+  this.t=0.04; //雨滴下落的时间
+ }
+
+ function drawraindrop(){ //画雨滴
+   ctx.strokeStyle='rgba(255,255,255,0.4)';		
+   ctx.beginPath();
+   var trunkGradient = ctx.createLinearGradient(this.sx, this.sy-this.size, this.sx, this.sy+this.size);  
+   trunkGradient.addColorStop(0, 'rgb(160,173,187)');  
+   trunkGradient.addColorStop(0.3, 'rgb(173,185,197)'); 
+   trunkGradient.addColorStop(0.8, 'rgb(255,255,255)'); 
+   trunkGradient.addColorStop(0.9, 'rgb(255,255,255)'); 
+   trunkGradient.addColorStop(1, 'rgb(173,185,197)');
+   ctx.fillStyle = trunkGradient; 
+   ctx.arc(this.sx,this.sy,this.size*this.sizea,0,Math.PI*7/4,true);
+   ctx.arc(this.sx,this.sy,this.size*this.sizeb,Math.PI*7/4,Math.PI*3/2,true);
+   ctx.arc(this.sx,this.sy,this.size*this.sizec,Math.PI*3/2,Math.PI*5/4,true);
+   ctx.arc(this.sx,this.sy,this.size*this.sized,Math.PI*5/4,Math.PI,true);
+   ctx.arc(this.sx,this.sy,this.size*this.sizee,Math.PI,Math.PI*3/4,true);
+   ctx.arc(this.sx,this.sy,this.size*this.sizef,Math.PI*3/4,Math.PI*1/2,true);
+   ctx.arc(this.sx,this.sy,this.size*this.sizeg,Math.PI*1/2,Math.PI/4,true);
+   ctx.closePath();
+   ctx.lineWidth=this.size*0.35; //线的宽度与雨滴大小成正比
+   ctx.stroke();
+   ctx.fill();  
+  }
+
+  function moveraindrop(){  //移动雨滴
+   this.sx+=this.speedx;
+   this.sy+=this.speedy;
+  }
+
+  //var moveraindrop = 0;
+
+  function init(){ //入口函数
+    ctx=document.getElementById('canvas').getContext('2d');
+    newRaindrop();
+  }
+
+  function newRaindrop(){ //为数组注入雨滴
+   var j=0;
+   while(j<Amount){
+    sx1=1250*Math.random();
+    sy1=670*Math.random();
+    size0=Math.random()*10;
+    speedx1=0;
+    speedy1=0;
+    size1=Math.random()*0.2+0.9;
+    size2=Math.random()*0.2+0.9;
+    size3=Math.random()*0.2+0.9;
+    size4=Math.random()*0.2+0.9;
+    size5=Math.random()*0.2+0.9;
+    size6=Math.random()*0.2+0.9;
+    size7=Math.random()*0.2+0.9;
+    araindrop=new Raindrop(sx1,sy1,speedx1,speedy1,size0,size1,size2,size3,size4,size5,size6,size7);
+    raindrops.push(araindrop);
+    j=j+1;
+   }
+   s=setInterval(drawall,40);
+   flag=1;
+  }
+
+  function drawall(){ //动态的画雨滴
+   ctx.clearRect(0,0,1250,670);
+   if(Math.random()<0.5){
+     Amount=1;
+     newRaindrop();
+    }
+
+   for(var i=0;i<raindrops.length;i++){
+     raindrops[i].draw();
+     raindrops[i].move();
+     if(raindrops[i].gravity>friction){
+       raindrops[i].speedx=0;
+       raindrops[i].speedy=(raindrops[i].speedy+(raindrops[i].t*(10-10*friction/raindrops[i].gravity)));
+       raindrops[i].t=raindrops[i].t+0.04;
+     }
+     else{
+      raindrops[i].speedx=0;
+      raindrops[i].speedy=0.001;
+     }
+   }
+
+   for(var i=0;i<raindrops.length;i++){
+     for(var j=0;j<raindrops.length;j++){
+       if((Math.sqrt((raindrops[i].sx-raindrops[j].sx)*(raindrops[i].sx-raindrops[j].sx)+(raindrops[i].sy-raindrops[j].sy)*(raindrops[i].sy-raindrops[j].sy))<(raindrops[i].size+raindrops[j].size))&&(i!=j)){
+         if(raindrops[i].size>raindrops[j].size){
+           raindrops[i].gravity=raindrops[i].gravity+raindrops[j].gravity;
+           raindrops[i].size=Math.sqrt(raindrops[i].size*raindrops[i].size+raindrops[j].size*raindrops[j].size);
+           raindrops.splice(j, 1);
+         }
+         else{
+           raindrops[j].gravity=raindrops[i].gravity+raindrops[j].gravity;
+           raindrops[j].size=Math.sqrt(raindrops[i].size*raindrops[i].size+raindrops[j].size*raindrops[j].size);
+           raindrops.splice(i, 1);
+         }
+       }
+     }
+   }
+  }
+
+</script>
+</head>
+<body onLoad="init();">
+<canvas id="canvas" width="1250" height="670">
+Your browser doesn't support the HTML5 element canvas.
+</canvas>
+<audio autoplay="autoplay" loop="loop">
+  <source src="music/Raindrop.mp3">
+</audio>
+<audio autoplay="autoplay" loop="loop">
+  <source src="music/tears.mp3">
+</audio>
+</body>
+</html>

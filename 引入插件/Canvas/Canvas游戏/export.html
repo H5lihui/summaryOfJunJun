@@ -1,0 +1,343 @@
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"><script src="chrome-extension://mbbfdipmmlbkfdkeklpioafmdcodhfli/js/jquery.js" type="text/javascript"></script><link href="chrome-extension://mbbfdipmmlbkfdkeklpioafmdcodhfli/noprint.css" rel="stylesheet" media="print"><link rel="stylesheet" id="theme" href="chrome-extension://mbbfdipmmlbkfdkeklpioafmdcodhfli/theme/dzplatrd.css"></head><body><h1 id="head0">javascript 总结</h1>
+<h2 id="head1">语法</h2>
+<ol>
+<li>区分大小写</li>
+<li>命名规范</li>
+<li>首字母必须是 字母 _ $</li>
+<li>其他字符可以是 数字 字母 下划线 $</li>
+<li>避开系统的关键字</li>
+<li>单词和单词连接方式推荐驼峰命名</li>
+<li>注释</li>
+<li>单行注释 //注释的内容</li>
+<li>多行注释 /<em>注释内容</em>/</li>
+<li>语句</li>
+<li>要用;结尾(推荐做法)</li>
+<li>如果不写; 那么系统默认以换行作为语句的结尾</li>
+</ol>
+<h2 id="head2">变量/常量</h2>
+<ol>
+<li>变量声明 var</li>
+<li>常量声明 const</li>
+</ol>
+<h2 id="head3">数据类型</h2>
+<ol>
+<li>typeof 检测数据类型  a=null;typeof a 可能是object  对于比较老的浏览器是function</li>
+<li>undefined</li>
+<li>null</li>
+<li>Boolean</li>
+<li>true/false</li>
+<li>Number</li>
+<li>数字(正/负/整/小/0/Infinity/-Infinity)</li>
+<li>NaN  NaN==NaN  返回false</li>
+<li>String</li>
+<li>使用单引号或者双引号来定义</li>
+<li>转义字符\   \n \t  \r  \' \"</li>
+<li>字符串可以通过数组下标的方式来调用字符串对应位置的字符</li>
+</ol>
+<h2 id="head4">运算符</h2>
+<ol>
+<li>算术运算符: + - * / % ++ -- +(正) -(反)</li>
+<li>字符串: +</li>
+<li>比较运算符: &gt; &lt;  == === != !== &gt;= &lt;= </li>
+<li>逻辑运算符: &amp;&amp; || !</li>
+<li>位运算符: &amp; | ^ XOR &lt;&lt; &gt;&gt; &lt;&lt;&lt; &gt;&gt;&gt;</li>
+<li>三元运算符: 条件? 语句1:语句2</li>
+<li>赋值: = 带操作赋值: += -= *= /= %= |= &amp;= ^= &lt;&lt;= &gt;&gt;= &lt;&lt;&lt;= &gt;&gt;&gt;=</li>
+<li>其他运算符: . , typeof delete instanceof void</li>
+</ol>
+<h2 id="head5">流程控制语句</h2>
+<h3 id="head6">分支</h3>
+<h4 id="head7">if语句</h4>
+<pre><code class="ruby"><span class="number">1</span>. <span class="keyword">if</span>(条件){执行.....}
+<span class="number">2</span>. <span class="keyword">if</span>(条件){...}<span class="keyword">else</span>{...}
+<span class="number">3</span>. <span class="keyword">if</span>(条件){...}<span class="keyword">else</span> <span class="keyword">if</span>(条件){}
+<span class="number">4</span>. <span class="keyword">if</span>(条件){...}<span class="keyword">else</span> <span class="keyword">if</span>(条件){}<span class="keyword">else</span>{}
+<span class="number">5</span>. <span class="keyword">if</span>语句可以嵌套多层
+</code></pre><h4 id="head8">switch语句</h4>
+<pre><code class="javascript">    <span class="keyword">switch</span>(传入值){
+        <span class="keyword">case</span> 值:
+            执行内容...;
+            <span class="keyword">break</span>;
+        <span class="keyword">case</span> 值:
+            ....
+            <span class="keyword">break</span>;
+        <span class="keyword">default</span>:
+            执行.....
+    }
+</code></pre><h3 id="head9">循环</h3>
+<h4 id="head10">for</h4>
+<pre><code class="javascript"><span class="comment">//语句1只执行1次</span>
+<span class="comment">//执行语句2 当语句2返回true 继续执行</span>
+    <span class="keyword">for</span>(语句<span class="number">1</span>;语句<span class="number">2</span>;语句<span class="number">4</span>){
+        语句<span class="number">3</span>
+    }
+</code></pre><h4 id="head11">while</h4>
+<pre><code class="javascript">    <span class="keyword">while</span>(条件){...}   <span class="comment">//条件为真  执行</span>
+    <span class="keyword">do</span>{...}<span class="keyword">while</span>()    <span class="comment">//先执行一次  再判断条件是否为真  为真继续执行</span>
+</code></pre><h4 id="head12">for...in</h4>
+<pre><code class="javascript">    <span class="comment">//遍历数组或者对象</span>
+
+    <span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> obj){
+        <span class="comment">//i表示 obj 的 下标 键名</span>
+        obj[i]  <span class="comment">//obj  下标i对应的  值 </span>
+    }
+</code></pre><h2 id="head13">函数(作用域)</h2>
+<pre><code class="delphi">    <span class="function"><span class="keyword">function</span> 函数名<span class="params">()</span><span class="comment">{
+
+    }</span>
+
+    <span class="title">var</span> 变量名 = <span class="title">function</span><span class="params">()</span><span class="comment">{}</span>
+
+    //调用
+    函数名<span class="params">()</span>
+    变量名<span class="params">()</span>
+
+    <span class="params">(<span class="keyword">function</span>(形参)</span><span class="comment">{}</span>)<span class="params">(实参)</span>
+    <span class="params">(<span class="keyword">function</span>(形参)</span><span class="comment">{}</span><span class="params">(实参)</span>)
+
+    函数里边内部有个<span class="title">arguments</span> 表示 实参对象
+</span></code></pre><h2 id="head14">对象</h2>
+<ol>
+<li>对象声明</li>
+</ol>
+<pre><code class="javascript">    <span class="comment">//数组</span>
+    <span class="keyword">var</span> arr = [];
+    <span class="keyword">var</span> arr = <span class="keyword">new</span> Array();
+
+    <span class="comment">//对象</span>
+    <span class="keyword">var</span> obj = {};
+    <span class="keyword">var</span> obj1 = <span class="keyword">new</span> Object();
+    <span class="keyword">var</span> obj2 = <span class="keyword">new</span> 自定义构造方法();
+    <span class="keyword">var</span> obj = {<span class="string">"name1"</span>:<span class="string">"zhangsan"</span>,name2:<span class="string">"lisi"</span>}
+</code></pre><ol>
+<li>构造方法</li>
+</ol>
+<pre><code class="javascript"><span class="comment">//构造方法</span>
+    <span class="function"><span class="keyword">function</span> <span class="title">Person</span><span class="params">(n)</span>{</span>
+        <span class="keyword">this</span>.name = n||<span class="string">'小白'</span>;
+        <span class="keyword">this</span>.say = <span class="keyword">function</span>(){
+            alert(<span class="keyword">this</span>.name)
+        }
+    }
+</code></pre><h2 id="head15">内置对象</h2>
+<h3 id="head16">Boolean</h3>
+<h3 id="head17">Date</h3>
+<pre><code class="javascript">getFullYear()<span class="comment">//年</span>
+getMonth()<span class="comment">//月 0-11  当前月份需要+1</span>
+getDate()<span class="comment">//日</span>
+getDay()<span class="comment">//星期 0~6   0星期日</span>
+getHours()<span class="comment">//时</span>
+getMinutes()<span class="comment">//分</span>
+getSeconds()<span class="comment">//秒</span>
+getMilliseconds()<span class="comment">//毫秒</span>
+getTime()<span class="comment">//时间戳 毫秒级</span>
+
+toString() <span class="comment">//以字符串形式输出</span>
+valueOf() <span class="comment">//内部存的值</span>
+</code></pre><h3 id="head18">Number</h3>
+<pre><code class="undefined">    toString(进制)
+    toFixed(n)  显示n位小数
+    toExponential(n)显示n位.后面的数 指数表示法
+    toPrecision(n) 显示n位
+</code></pre><h3 id="head19">Math</h3>
+<pre><code class="javascript">    Math.PI  <span class="comment">//3.1415926535</span>
+    Math.abs()    <span class="comment">//取绝对值</span>
+    Math.ceil()    <span class="comment">//进一取整</span>
+    Math.floor()    <span class="comment">//退一取整</span>
+    Math.max()<span class="comment">//最大值</span>
+    Math.min()<span class="comment">//最小值</span>
+    Math.pow(x,y)<span class="comment">//x的y次幂</span>
+    Math.random()    <span class="comment">//0~1的随机数    </span>
+    <span class="comment">//m~n随机整数     </span>
+    <span class="comment">//Math.floor(Math.random()*(n-m+1))+m//建议使用</span>
+    <span class="comment">//Math.ceil(Math.random()*(n-m+1))+m-1</span>
+    Math.round()    <span class="comment">//round  四舍五入</span>
+    Math.sqrt()    <span class="comment">//求平方根</span>
+</code></pre><h3 id="head20">String</h3>
+<pre><code class="http">
+
+<span class="javascript">trim() <span class="comment">//清空两侧的空白</span>
+
+<span class="comment">//查找</span>
+charAt() <span class="comment">// 获取指定位置上的字符</span>
+charCodeAt()    <span class="comment">//获取对应位置上的字符的ASCII码</span>
+indexOf(“abc”)    <span class="comment">//返回子字符串abc在字符串中第一次出现的位置</span>
+lastIndexOf(“abc”)    <span class="comment">//返回子字符串abc在字符串中最后一次出现的位置</span>
+match(regexp)    <span class="comment">//找到一个或多个正则表达式的匹配</span>
+search(regexp)    <span class="comment">//查找与正则表达式相匹配的子字符串</span>
+
+<span class="comment">//替换</span>
+replace(表达式,替换的字符串)    <span class="comment">//替换一个与正则表达式相匹配的子串</span>
+
+<span class="comment">//截取</span>
+split(正则表达式,数组最大长度)    <span class="comment">//用于把一个字符串分割成字符串的数组</span>
+slice(startindex,endindex)    <span class="comment">//返回一个子字符串</span>
+substring(startindex,endindex)    <span class="comment">//返回一个子字符串</span>
+substr(startindex,length)    <span class="comment">//返回一个子字符串</span>
+
+<span class="comment">//转换</span>
+toLowerCase()    <span class="comment">//将字符串转换为小写</span>
+toUpperCase()    <span class="comment">//将字符串转换为大写</span>
+</span></code></pre><h3 id="head21">RegExp</h3>
+<pre><code class="javascript">    exec()    <span class="comment">//返回匹配内容</span>
+    test()    <span class="comment">//判断是否匹配</span>
+</code></pre><h3 id="head22">Array</h3>
+<pre><code class="javascript"><span class="comment">//添加/删除</span>
+unshift() <span class="comment">//从数组头部添加元素</span>
+shift()        <span class="comment">//从数组头部删除一个元素</span>
+push()        <span class="comment">//从尾部添加</span>
+pop()        <span class="comment">//从尾部弹出一个元素</span>
+splice()    <span class="comment">//删除  替换  或 插入数组元素</span>
+
+<span class="comment">//截取</span>
+concat()    <span class="comment">//合并 数组 或 元素  为一个新数组</span>
+slice()        <span class="comment">//返回数组中的一部分</span>
+
+<span class="comment">//格式化</span>
+toString()    <span class="comment">//以字符串形式输出数组</span>
+join()        <span class="comment">//将数组元素以某个字符连接成字符串</span>
+reverse()    <span class="comment">//颠倒数组中元素顺序</span>
+sort()        <span class="comment">//排列数组中元素顺序</span>
+</code></pre><h3 id="head23">Function (没用)</h3>
+<h3 id="head24">Global</h3>
+<pre><code class="javascript">    parseInt()    <span class="comment">//强制转换成int</span>
+    parseFloat()    <span class="comment">//强制换行成float</span>
+    isNaN()        <span class="comment">//判断是不是NaN</span>
+    isFinite()    <span class="comment">//判断是不是Infinity</span>
+    eval()        <span class="comment">//把字符串当做JS语句执行</span>
+    escape()    <span class="comment">//编码</span>
+    unescape()    <span class="comment">//解码</span>
+</code></pre><h2 id="head25">BOM</h2>
+<h3 id="head26">Location 对象 当前文档url地址对象模型</h3>
+<pre><code class="javascript"><span class="comment">//跳转页面 设置 location.href = ""</span>
+
+protocal <span class="comment">//协议</span>
+hostname <span class="comment">//主机域名</span>
+port    <span class="comment">//端口号</span>
+pathname    <span class="comment">//路径加文件名</span>
+search    <span class="comment">//get参数 ?后面的内容</span>
+hash    <span class="comment">//锚点     #后面的</span>
+href    <span class="comment">//完整url地址</span>
+
+
+assign() <span class="comment">//跳转</span>
+replace()    <span class="comment">//替换跳转</span>
+reload()    <span class="comment">//刷新</span>
+</code></pre><h3 id="head27">Navigator 浏览器信息</h3>
+<pre><code class="javascript">appCodeName    <span class="comment">//代码名称</span>
+appName        <span class="comment">//浏览器名称</span>
+appVersion <span class="comment">//浏览器版本号</span>
+language    <span class="comment">//语言</span>
+platform    <span class="comment">//系统</span>
+userAgent    <span class="comment">//用户请求头</span>
+</code></pre><h3 id="head28">screen 浏览器屏幕信息</h3>
+<pre><code class="javascript">    width    <span class="comment">//屏幕宽度</span>
+    height    <span class="comment">//屏幕高度</span>
+    availWidth - 可用的屏幕宽度 
+    availHeight - 可用的屏幕高度
+</code></pre><h3 id="head29">history 访问网页历史</h3>
+<pre><code class="javascript">    back() <span class="comment">//后退 返回上一个 url</span>
+    forward() <span class="comment">//前进 到下一个 url</span>
+    go(n)    <span class="comment">//跳转到 第 n 个 url</span>
+</code></pre><h3 id="head30">其他</h3>
+<pre><code class="javascript">alert(<span class="string">"文本"</span>)  <span class="comment">//警告框</span>
+confirm(<span class="string">"文本"</span>)    <span class="comment">//确认框</span>
+prompt(<span class="string">"文本"</span>,<span class="string">"默认值"</span>)    <span class="comment">//提示框</span>
+
+setInterval()
+clearInterval()
+
+setTimeout
+clearTimeout()
+</code></pre><h2 id="head31">DOM</h2>
+<pre><code class="javascript">
+all[]    <span class="comment">//提供对文档中所有 HTML 元素的访问。</span>
+forms[]    <span class="comment">//所有form元素</span>
+images[]<span class="comment">//所有img元素</span>
+links[]<span class="comment">//所有a元素</span>
+
+
+
+<span class="comment">//节点获取</span>
+getElementById()    <span class="comment">//通过id获取节点</span>
+getElementsByTagName()    <span class="comment">//通过标签名获取节点</span>
+getElementsByName()    <span class="comment">//通过name属性获取节点</span>
+
+childNodes    children
+firstChild    firstElementChild
+lastChild    lastElementChild
+nextSibling    nextElementSibling
+previousSibling    previousElementSibling
+parentNode    parentElement
+
+<span class="comment">//获取属性</span>
+attributes <span class="comment">//属性集合</span>
+getAttribute(<span class="string">"属性名"</span>)    <span class="comment">//获取属性</span>
+setAttribute(<span class="string">"属性名"</span>,<span class="string">"属性值"</span>)    <span class="comment">//设置属性</span>
+node.removeAttribute(<span class="string">"属性名"</span>)        <span class="comment">//删除属性</span>
+className
+
+<span class="comment">//节点操作</span>
+document.createElement()    <span class="comment">//创建节点</span>
+document.createTextNode();    <span class="comment">//创建文本节点</span>
+parentNode.appendChild()  <span class="comment">//添加节点</span>
+parentNode.insertBefore(newNode,oldNode)    <span class="comment">//在xx节点前面添加子节点</span>
+parentNode.replaceChild(newNode,oldNode)    <span class="comment">//把xx节点替换上一个新节点</span>
+parentNode.removeChild()    <span class="comment">//删除节点</span>
+
+<span class="comment">//便捷操作 获取内容</span>
+node.innerHTML <span class="comment">//获取标签里边所有内容</span>
+node.value    <span class="comment">//获取表单的值</span>
+</code></pre><h2 id="head32">事件</h2>
+<pre><code class="javascript"><span class="comment">//鼠标事件</span>
+* onclick    <span class="comment">//单击</span>
+dblclick<span class="comment">//双击</span>
+mousedown<span class="comment">//按下</span>
+mouseup<span class="comment">//抬起</span>
+* mouseover    <span class="comment">//移入</span>
+* mouseout<span class="comment">//移出</span>
+* mousemove<span class="comment">//移动</span>
+
+contextmenu<span class="comment">//鼠标右键</span>
+
+<span class="comment">//键盘事件</span>
+onkeydown<span class="comment">//按下</span>
+onkeyup<span class="comment">//按起</span>
+onkeypress<span class="comment">//在用户敲击按钮时触发</span>
+
+<span class="comment">//文档</span>
+* onload 加载
+* scroll 滚动条
+resize <span class="comment">//监听浏览器窗口大小改变</span>
+
+<span class="comment">//表单</span>
+** onsubmit    提交事件
+* focus    获取焦点
+* blur    失去焦点
+* change 内容改变
+onselect    在元素中文本被选中后触发。
+</code></pre><h3 id="head33">事件对象</h3>
+<pre><code class="javascript">onXXX = <span class="keyword">function</span>(ent){
+<span class="comment">//获取事件对象</span>
+    <span class="keyword">var</span> e = ent || window.event;<span class="comment">//兼容性处理</span>
+}
+
+<span class="comment">//事件对象的属性</span>
+altKey 返回当事件被触发时，<span class="string">"ALT"</span> 是否被按下。 
+button 返回当事件被触发时，哪个鼠标按钮被点击。 
+* clientX 返回当事件被触发时，鼠标指针的水平坐标。 
+* clientY 返回当事件被触发时，鼠标指针的垂直坐标。 
+* pageX 相对于页面的位置
+* pageY 相对于页面的位置
+ctrlKey 返回当事件被触发时，<span class="string">"CTRL"</span> 键是否被按下。 
+metaKey 返回当事件被触发时，<span class="string">"meta"</span> 键是否被按下。 
+relatedTarget 返回与事件的目标节点相关的节点。 
+screenX 返回当某个事件被触发时，鼠标指针的水平坐标。 
+screenY 返回当某个事件被触发时，鼠标指针的垂直坐标。 
+shiftKey 返回当事件被触发时，<span class="string">"SHIFT"</span> 键是否被按下。 
+* keyCode 返回字符的ascii码
+
+<span class="comment">//取消冒泡</span>
+e.cancelBubble = <span class="literal">true</span>||e.stopPropagation();
+</code></pre><h2 id="head34">ajax</h2>
+<div class="menutree noprint"><p>目录，打印时自动隐藏 <a href="javascript:;" id="toggle">折叠</a></p><dl id="menu_content"><dd class="cate cateLevel1"><a _jump="head0" href="javascript:return false;">javascript 总结</a></dd><dd class="cate cateLevel2"><a _jump="head1" href="javascript:return false;">语法</a></dd><dd class="cate cateLevel2"><a _jump="head2" href="javascript:return false;">变量/常量</a></dd><dd class="cate cateLevel2"><a _jump="head3" href="javascript:return false;">数据类型</a></dd><dd class="cate cateLevel2"><a _jump="head4" href="javascript:return false;">运算符</a></dd><dd class="cate cateLevel2"><a _jump="head5" href="javascript:return false;">流程控制语句</a></dd><dd class="cate cateLevel3"><a _jump="head6" href="javascript:return false;">分支</a></dd><dd class="cate cateLevel4"><a _jump="head7" href="javascript:return false;">if语句</a></dd><dd class="cate cateLevel4"><a _jump="head8" href="javascript:return false;">switch语句</a></dd><dd class="cate cateLevel3"><a _jump="head9" href="javascript:return false;">循环</a></dd><dd class="cate cateLevel4"><a _jump="head10" href="javascript:return false;">for</a></dd><dd class="cate cateLevel4"><a _jump="head11" href="javascript:return false;">while</a></dd><dd class="cate cateLevel4"><a _jump="head12" href="javascript:return false;">for...in</a></dd><dd class="cate cateLevel2"><a _jump="head13" href="javascript:return false;">函数(作用域)</a></dd><dd class="cate cateLevel2"><a _jump="head14" href="javascript:return false;">对象</a></dd><dd class="cate cateLevel2"><a _jump="head15" href="javascript:return false;">内置对象</a></dd><dd class="cate cateLevel3"><a _jump="head16" href="javascript:return false;">Boolean</a></dd><dd class="cate cateLevel3"><a _jump="head17" href="javascript:return false;">Date</a></dd><dd class="cate cateLevel3"><a _jump="head18" href="javascript:return false;">Number</a></dd><dd class="cate cateLevel3"><a _jump="head19" href="javascript:return false;">Math</a></dd><dd class="cate cateLevel3"><a _jump="head20" href="javascript:return false;">String</a></dd><dd class="cate cateLevel3"><a _jump="head21" href="javascript:return false;">RegExp</a></dd><dd class="cate cateLevel3"><a _jump="head22" href="javascript:return false;">Array</a></dd><dd class="cate cateLevel3"><a _jump="head23" href="javascript:return false;">Function (没用)</a></dd><dd class="cate cateLevel3"><a _jump="head24" href="javascript:return false;">Global</a></dd><dd class="cate cateLevel2"><a _jump="head25" href="javascript:return false;">BOM</a></dd><dd class="cate cateLevel3"><a _jump="head26" href="javascript:return false;">Location 对象 当前文档url地址对象模型</a></dd><dd class="cate cateLevel3"><a _jump="head27" href="javascript:return false;">Navigator 浏览器信息</a></dd><dd class="cate cateLevel3"><a _jump="head28" href="javascript:return false;">screen 浏览器屏幕信息</a></dd><dd class="cate cateLevel3"><a _jump="head29" href="javascript:return false;">history 访问网页历史</a></dd><dd class="cate cateLevel3"><a _jump="head30" href="javascript:return false;">其他</a></dd><dd class="cate cateLevel2"><a _jump="head31" href="javascript:return false;">DOM</a></dd><dd class="cate cateLevel2"><a _jump="head32" href="javascript:return false;">事件</a></dd><dd class="cate cateLevel3"><a _jump="head33" href="javascript:return false;">事件对象</a></dd><dd class="cate cateLevel2"><a _jump="head34" href="javascript:return false;">ajax</a></dd></dl></div></body></html>

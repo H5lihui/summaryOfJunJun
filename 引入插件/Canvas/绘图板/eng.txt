@@ -1,0 +1,12 @@
+绘画笔 drawingPens
+橡皮擦 eraser
+油漆桶 paintBucket
+吸管  eyedropper
+文本  textEntry
+放大镜 magnifier
+直线   linear
+空心圆 georama
+空心矩形 outlinedRectangle
+空心三角 hollowTriangular
+实心圆   solidDisc
+实心矩形  filledRectangle 

@@ -1,0 +1,46 @@
+插件：有人将做好的功能直接封装成对象，我们引入他的css和js样式，然后在调用一下，就可以快速的实现相关的功能
+
+	原生JS的插件
+	基于jQuery的插件
+
+artDialog：基于jQuery的插件
+
+
+插件 = 大对象(插件复杂的情况是多个对象) = 属性和方法
+
+属性
+	title:对话框的标题
+	content:对话框的内容
+	statusbar:状态栏
+	okValue:确定按钮的文字（默认是ok）
+	cancelValue:取消按钮的文字（默认是cancel）
+	cancelDisplay:控制取消按钮的显示与不显示（第一次学习这个东西的时候，如果不知道用在什么地方，那么你就有个印象就行了）
+	button：自定义按钮
+		[
+			{value:"按钮的文字",callback:"这是函数，表示点击按钮之后触发的函数"}, 
+			{value:"按钮的文字",callback:"这是函数，表示点击按钮之后触发的函数"}, 
+		]
+	width
+	height
+	padding
+	fixed:true:对话框是固定定位，不会随着滚动而滚动
+	quickClose:true:点击页面的空白处快速关闭
+方法
+	show():展示对话框
+	show(DOM对象):展示气泡浮层
+	showModal():展示模态框
+
+	ok:点击确定按钮执行的方法
+	cancel:点击取消按钮执行的方法
+
+	close():关闭对话框（让对话框隐藏）
+	remove():删除对话框（直接删除对话框）
+
+	width()
+	height()
+	content()
+	title()
+
+事件：也是方法
+	onshow():
+	onclose()：

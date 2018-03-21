@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>dialog</title>
+    <style>
+    body {
+        height: 2000px;
+    }
+
+    .box {
+        display: none;
+    }
+    </style>
+</head>
+
+<body>
+    <button>点击登录</button>
+    <div class="box">
+        <p>别担心，无账号自动注册不会导致手机号被泄露</p>
+        用户名：
+        <input type="text" name="username" value="">
+        <br>
+        <br> 密码：
+        <input type="password" name="password" value="">
+        <br>
+        <br> 验证码：
+        <input type="text" name="code">
+        <br>
+        <br>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/dialog.js"></script>
+    <script>
+    $(function() {
+        // 普通对话框
+        $('button:eq(0)').click(function() {
+            var d = dialog({
+                // 对话框的标题
+                title: '请登录',
+                // 对话框的内容,通过jQuery对象快捷的获取页面的对象
+                content: $('.box'),
+                // 确定按钮上的文字
+                okValue: '确定',
+                // 点击了ok按钮，执行的函数
+                ok: function() {
+                    // alert('你点击了登录按钮');
+                    // 验证用户名和密码格式是否正确
+                    // 将用户名和和密码提交到服务器
+                    // 关闭对话框
+                },
+                // 取消按钮的文字
+                cancelValue: '取消',
+                // 点击了取消按钮，执行的函数
+                cancel: function() {
+                    alert('你点击了取消按钮');
+                },
+                // 状态栏
+                statusbar: '<label><input type="checkbox">7天之内免登陆</label>',
+                cancelDisplay: false,//不展示取消按钮
+                width: 800,
+                height: 300,
+                padding: 100,
+                // true：弹框固定定位，不设置或者设置为false为绝对定位
+                fixed: true,
+                // 点击空白处快速关闭对话框
+                quickClose: false
+            });
+            // 展示对话框
+            d.show();
+        })
+    })
+    </script>
+</body>
+
+</html>

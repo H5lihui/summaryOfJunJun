@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<style>
+			canvas{border:1px solid #ABCDEF}
+		</style>
+	</head>
+	<body>
+		<canvas id="src" width="500" height="500">
+			如果你看到了这个消息，I'm so sorry.
+		</canvas>
+		<!--原图-->
+		<canvas id="dst" width="200" height="200">
+			如果你看到了这个消息，I'm so sorry.
+		</canvas>
+		<!--灰色的截图图像-->
+		<canvas id="dstGray" width="200" height="200">
+			如果你看到了这个消息，I'm so sorry.
+		</canvas>
+		<script>
+			//获取canvas元素
+			var src=document.getElementById('src');
+			var dst=document.getElementById('dst');
+			var dstGray=document.getElementById('dstGray');
+			//获取绘图环境
+			var srcCtx=src.getContext('2d');
+			var dstCtx=dst.getContext('2d');
+			var dstGrayCtx=dstGray.getContext('2d');
+			
+			//声明一个坐标点
+			var ponit=null;
+			
+			//为第一个canvas(ID为src的canvas) 加载一幅图片
+			var img=new Image();
+			img.src='huluwa.jpg';
+			
+			
+			//绘制第一图层 (背景图)
+			function drawBg(){
+				//将图像绘制到canvas中
+				srcCtx.drawImage(img,0,0);
+			}
+			
+			//绘制第二图层(遮罩层)
+			function drawGray(){
+				//在图片上绘制一个半透明的遮罩层
+				srcCtx.save();//保存绘图环境(可以视为新建一个图层)
+				//新图层
+				//设置填充的样式
+				srcCtx.fillStyle='rgba(0,0,0,0.5)';
+				//使用设置的样式将图层填满
+				srcCtx.fillRect(0,0,src.width,src.height);
+				srcCtx.restore();//释放绘图环境(可以视为一个合并图层的操作)
+			}
+			
+			//绘制第三图层 (局部高亮的图层)
+			function drawTop(x,y){
+				//产生一个200*200的矩形图层 显示 高亮内容
+				srcCtx.save();//开启一个新图层
+				
+				//开启一个新路径
+				srcCtx.beginPath();
+				//设置需要高亮的路径
+				srcCtx.rect(x,y,200,200);
+				//闭合路径  此处可以不闭合的 因为矩形本身就是闭合路径
+				srcCtx.closePath();
+				
+				//路径剪裁
+				srcCtx.clip();
+				//在该图层中绘制原图
+				srcCtx.drawImage(img,0,0);
+				//添加一个边框(等会)
+				srcCtx.strokeStyle='#000';
+				srcCtx.lineWidth=2;
+				srcCtx.strokeRect(x,y,200,200);
+				srcCtx.restore();//合并图层
+			}
+			
+			window.onload=function(){
+				drawBg();//第一图层
+				drawGray();//第二图层
+				drawTop(150,150);//第三图层  显示时固定在画布的正中间
+			}
+			
+			
+			
+			//设置鼠标是否按下的标志位
+			var flag=false;//没有按下鼠标
+			//添加鼠标事件 鼠标按下  将高亮区域放在鼠标的位置上
+			src.onmousedown=function(e){
+				//将鼠标状态设置为按下
+				flag=true;
+				point=windowToCanvas(src,e.clientX,e.clientY);
+				//清除整个canvas的所有内容
+				srcCtx.clearRect(0,0,src.width,src.height);
+				drawBg();//第一图层
+				drawGray();//第二图层
+				drawTop(point.x-100,point.y-100);//第三图层
+			}
+			
+			//添加鼠标事件 鼠标移动  高亮区域跟随鼠标移动
+			src.onmousemove=function(e){
+				if(flag){
+					//移动时不停地获取当前鼠标相对于画布的位置
+					point=windowToCanvas(src,e.clientX,e.clientY);
+					//清除整个canvas的所有内容
+					srcCtx.clearRect(0,0,src.width,src.height);
+					drawBg();//第一图层
+					drawGray();//第二图层
+					drawTop(point.x-100,point.y-100);//第三图层
+				}
+				
+			}
+			
+			//添加鼠标事件 鼠标抬起  抬起时 结束高亮区域的移动 讲高亮区域绘制的另一个canva中
+			src.onmouseup=function(e){
+				//将鼠标状态设置为释放
+				flag=false;
+				//将高亮区域的内容复制到另一个canvas中
+				//获取内容
+				var imgdata=srcCtx.getImageData(point.x-100,point.y-100,200,200);
+				//向第二个canvas中写内容
+				dstCtx.putImageData(imgdata,0,0);
+				//向第三个canvas中绘制内容
+				//将图像的像素信息变为灰色 
+				for(var i=0; i<imgdata.data.length;i+=4){
+					//计算平均值(每个像素的rgb平均值)
+					var avg=imgdata.data[i]+imgdata.data[i+1]+imgdata.data[i+2];
+					imgdata.data[i]=avg;
+					imgdata.data[i+1]=avg;
+					imgdata.data[i+2]=avg;
+				}
+				dstGrayCtx.putImageData(imgdata,0,0);
+			}
+			
+			//元素坐标转换函数
+			function windowToCanvas(element,x,y){
+				//元素独有的获取坐标的方法
+				var box=element.getBoundingClientRect();
+				var cx=x-box.left;
+				var cy=y-box.top;
+				return {x:cx,y:cy}
+			
+	}
+		
+		</script>
+	</body>
+</html>

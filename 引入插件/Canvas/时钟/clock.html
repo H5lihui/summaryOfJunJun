@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="500" height="500" style="border:1px solid red;"></canvas>
+    <script>
+    // 1.获取canvas对象
+    var context = document.getElementById('canvas')
+
+    // 2.获取绘图环境
+    var ctx = context.getContext('2d');
+
+    // 3.移动圆心坐标
+    ctx.translate(250, 250);
+
+    // setInterval(function() {
+    ctx.clearRect(-250, -250, 500, 500);
+    // 4.绘制表盘
+    ctx.beginPath();
+    ctx.arc(0, 0, 250, 0, Math.PI * 2, false);
+    // ctx.closePath();
+    ctx.stroke();
+
+    // 5.绘制分刻度
+    for (var i = 0; i < 60; i++) {
+        ctx.save();
+
+        ctx.beginPath();
+        ctx.rotate(Math.PI * 2 / 60 * i);
+        ctx.moveTo(0, -240);
+
+        ctx.lineTo(0, -250);
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    // 时针和数字
+    for (var i = 0; i < 12; i++) {
+        ctx.save();
+
+        ctx.beginPath();
+
+        ctx.rotate(Math.PI * 2 / 12 * i);
+        ctx.moveTo(0, -230);
+        ctx.lineWidth = 3;
+        ctx.lineTo(0, -250);
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.font = '30px 新宋体';
+        ctx.fillStyle = 'red';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        var x = 210 * Math.sin(Math.PI * 2 / 12 * (i - 2));
+        var y = 210 * Math.cos(Math.PI * 2 / 12 * (i - 2));
+        ctx.fillText(i + 1, y, x);
+    }
+
+    // 计算旋转角度
+    var d = new Date();
+    var hour = d.getHours();
+    var minute = d.getMinutes();
+    var second = d.getSeconds();
+
+    // 时针
+    ctx.save();
+    ctx.rotate(Math.PI * 2 / 12 * (hour + minute / 60 + second / 3600));
+    ctx.beginPath();
+    ctx.moveTo(0, 20);
+    ctx.lineTo(0, -150);
+    ctx.lineWidth = 6;
+    ctx.stroke();
+    ctx.restore();
+
+    // 分针
+    ctx.save();
+    ctx.rotate(Math.PI * 2 / 60 * (minute + second / 60));
+    ctx.beginPath();
+    ctx.moveTo(0, 20);
+    ctx.lineTo(0, -180);
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.restore();
+
+    // 秒针
+    ctx.save();
+    ctx.rotate(Math.PI * 2 / 60 * second);
+    ctx.beginPath();
+    ctx.moveTo(0, 20);
+    ctx.lineTo(0, -200);
+    ctx.strokeStyle = 'red';
+    ctx.stroke();
+    ctx.restore();
+    // })
+    </script>
+</body>
+
+</html>

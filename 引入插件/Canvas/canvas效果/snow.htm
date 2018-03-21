@@ -1,0 +1,241 @@
+<html>
+<head>
+<title>雪</title>
+<style>
+   body{
+    background-color:#FFB5B5;
+   }
+
+  .box1{
+    position : absolute;
+    left : 270px;
+    top : -30px;
+    width : 300px;
+    height : 690px;
+  }
+</style>
+<script>
+ var Amount=1500;//雪花初始数量
+ var ctx;//canvas上下文
+ var snows=[];//存放雪花的数组
+ var speed_basic=1;
+ var k=[];//使雪花飘落的不同步
+ 
+ for(var m=0;m<Amount;m++){
+   k[m]=Math.random()*100;
+ }
+
+ var flag=1; //用于记录当前状态，是静止还是飘落
+ var asnow; //用于临时保存新加入雪花的初始信息
+ var sx1;
+ var sy1;
+ var speedx1;
+ var speedy1;
+ var size1;
+ var stylestring1;
+ var kind1;
+
+ function speedUp(){
+   speed_basic=speed_basic+0.3;
+ }
+
+ function speedDown(){
+  if(speed_basic>0.1)
+   speed_basic=speed_basic-0.3;
+  else speed_basic=0;
+ }
+
+ function Snow(sx,sy,speedx,speedy,size,stylestring,kind){ //雪花类的定义
+  this.sx=sx;	  //雪花的位置
+  this.sy=sy;
+  this.speedx=speedx;//雪花的速度
+  this.speedy=speedy;
+  this.size=size; //雪花的大小
+  this.draw=drawsnow;//画雪花的函数
+  this.move= movesnow;//移动雪花的函数
+  this.strokeStyle=stylestring;//雪花的颜色
+  this.kind=kind;//雪花的种类
+ }
+
+  function drawsnow(){  //画雪花
+   ctx.strokeStyle=this.strokeStyle;
+   switch(this.kind){
+   case 1:  //雪花1的画法	
+    ctx.beginPath();
+    ctx.moveTo(this.sx-this.size*4,this.sy-this.size*7);
+    ctx.lineTo(this.sx+this.size*4,this.sy+this.size*7);
+    ctx.moveTo(this.sx+this.size*4,this.sy-this.size*7);
+    ctx.lineTo(this.sx-this.size*4,this.sy+this.size*7);
+    ctx.moveTo(this.sx-this.size*8,this.sy);
+    ctx.lineTo(this.sx+this.size*8,this.sy);		
+    ctx.moveTo(this.sx-this.size*8,this.sy-this.size*2.4);
+    ctx.lineTo(this.sx-this.size*8,this.sy+this.size*2.4);
+    ctx.moveTo(this.sx+this.size*8,this.sy-this.size*2.4);
+    ctx.lineTo(this.sx+this.size*8,this.sy+this.size*2.4);
+    ctx.moveTo(this.sx-this.size*3.2,this.sy-this.size*8);
+    ctx.lineTo(this.sx-this.size*4.8,this.sy-this.size*4.8);
+    ctx.moveTo(this.sx+this.size*3.2,this.sy-this.size*8);
+    ctx.lineTo(this.sx+this.size*4.8,this.sy-this.size*4.8);
+    ctx.moveTo(this.sx+this.size*3.2,this.sy+this.size*8);
+    ctx.lineTo(this.sx+this.size*4.8,this.sy+this.size*4.8);
+    ctx.moveTo(this.sx-this.size*3.2,this.sy+this.size*8);
+    ctx.lineTo(this.sx-this.size*4.8,this.sy+this.size*4.8);
+    break;
+
+  case 2: //雪花2的画法
+    ctx.beginPath();
+    ctx.moveTo(this.sx-5*this.size,this.sy-8.66*this.size);
+    ctx.lineTo(this.sx+5*this.size,this.sy+8.66*this.size);
+    ctx.moveTo(this.sx+5*this.size,this.sy-8.66*this.size);
+    ctx.lineTo(this.sx-5*this.size,this.sy+8.66*this.size);
+    ctx.moveTo(this.sx-10*this.size,this.sy);
+    ctx.lineTo(this.sx+10*this.size,this.sy);
+    ctx.moveTo(this.sx+2*this.size,this.sy+6*this.size);
+    ctx.lineTo(this.sx+2.5*this.size,this.sy+4.33*this.size);
+    ctx.lineTo(this.sx+5*this.size,this.sy+4.8*this.size);
+    ctx.moveTo(this.sx+2*this.size,this.sy-6*this.size);
+    ctx.lineTo(this.sx+2.5*this.size,this.sy-4.33*this.size);
+    ctx.lineTo(this.sx+5*this.size,this.sy-4.8*this.size);
+    ctx.moveTo(this.sx-2*this.size,this.sy+6*this.size);
+    ctx.lineTo(this.sx-2.5*this.size,this.sy+4.33*this.size);
+    ctx.lineTo(this.sx-5*this.size,this.sy+4.8*this.size);
+    ctx.moveTo(this.sx-2*this.size,this.sy-6*this.size);
+    ctx.lineTo(this.sx-2.5*this.size,this.sy-4.33*this.size);
+    ctx.lineTo(this.sx-5*this.size,this.sy-4.8*this.size);
+    ctx.moveTo(this.sx+7*this.size,this.sy+1.5*this.size);
+    ctx.lineTo(this.sx+5*this.size,this.sy);
+    ctx.lineTo(this.sx+7*this.size,this.sy-1.5*this.size);
+    ctx.moveTo(this.sx-7*this.size,this.sy+1.5*this.size);
+    ctx.lineTo(this.sx-5*this.size,this.sy);
+    ctx.lineTo(this.sx-7*this.size,this.sy-1.5*this.size);
+    break;
+ 
+   case 3:  //雪花3的画法
+    ctx.beginPath();ctx.arc(this.sx,this.sy,2*this.size,0,Math.PI*2,true);
+    ctx.arc(this.sx,this.sy,5*this.size,0,Math.PI*2,true);ctx.arc(this.sx,this.sy,10*this.size,0,Math.PI*2,true);
+    break;
+
+  case 4: //雪花4的画法
+    ctx.beginPath();
+    ctx.arc(this.sx,this.sy,5*this.size,0,Math.PI*2,true);
+    break;
+  }
+
+  ctx.lineWidth=this.size*1.5;	
+  ctx.stroke(); //线的宽度与雪花大小成正比
+ }
+
+  function getkeyAndSetAmount(){ //键盘事件处理函数 
+   var keyCode;
+   if(event==null){
+     keyCode=window.event.keyCode;
+     Window.event.preventDefault();
+   }
+   else{
+    keyCode=event.keyCode;
+    event.preventDefault();
+   }
+  switch(keyCode){	//按上键，为数组注入新的雪花
+   case 38:
+    clearInterval(s);
+    Amount=500;
+    for(var m=snows.length;m<Amount+snows.length;m++){
+     k[m]=Math.random()*100;
+    }
+    newSnow();
+    break;
+
+  case 40:  //按下键，删除部分雪花
+    clearInterval(s);
+    for(var i=0;i<500;i++)
+      snows.pop();
+    s=setInterval(drawall,40);
+    flag=1;
+    break;
+
+  case 37: //按左键，放慢雪花下落的速度
+   speedDown();
+   break;
+
+  case 39: //按右键，加快雪花下落的速度
+   speedUp();
+   break;
+
+  case 32: //按空格，停止或继续
+   if(flag==1){
+     clearInterval(s);
+     flag=0;
+   }
+   else{
+     s=setInterval(drawall,40);
+     flag=1;
+   }
+   break;
+  }
+ }
+
+ function movesnow(){  //移动雪花的函数，每画一次，移动一次
+   this.sx+=this.speedx*speed_basic;
+   this.sy+=this.speedy*speed_basic;
+  }
+
+  function init(){ //入口函数
+    window.addEventListener('keydown',getkeyAndSetAmount,false); //设置按键的事件处理
+    ctx=document.getElementById('canvas').getContext('2d');
+    newSnow();
+  }
+
+  function newSnow(){ //为数组注入雪花
+   var j=0;
+   while(j<Amount){
+     sx1=1400*Math.random();  //雪花从高空落下
+     sy1=9800*Math.random()-9100;
+     size1=0.5+1.5*Math.random();
+     speedx1=(4*Math.random()-2)/size1;
+     speedy1=(1.5*Math.random())/size1;
+     stylestring1='rgba(255,255,255,0.4)';
+     kind1=Math.floor(Math.random()*4+0.5);
+
+     asnow=new Snow(sx1,sy1,speedx1,speedy1,size1,stylestring1,kind1);
+     snows.push(asnow);
+     j=j+1;
+    }
+    s=setInterval(drawall,40);
+    flag=1;
+   }
+
+  function drawall(){//动态的画雪花
+   ctx.clearRect(0,0,1250,670);
+   for(var i=0;i<snows.length;i++){
+     snows[i].draw();
+     snows[i].move();
+     if(k[i]%200<70){
+       snows[i].speedx=2*Math.random()/snows[i].size;
+       k[i]=k[i]+1;
+     }
+     else if(k[i]%200<100&&k[i]%200>70||k[i]%200>170){
+        snows[i].speedx=(1-2*Math.random())/snows[i].size;
+        k[i]=k[i]+1;
+     }
+     else{
+        snows[i].speedx=-2*Math.random()/snows[i].size;
+        k[i]=k[i]+1;
+     }
+     snows[i].speedy=1.5*Math.random()/snows[i].size;
+   }
+  }
+
+</script>
+</head>
+<body onLoad="init();">
+<canvas id="canvas" width="1250" height="670">
+  Your browser doesn't support the HTML5 element canvas.
+</canvas>
+<div class="box1">
+  <img src="imgs\snowman.jpg" width="600px" height="685px">
+</div>
+<audio autoplay="autoplay" loop="loop">
+  <source src="music/snow.mp3" type="audio/mpeg">
+</audio>
+</body>
+</html>

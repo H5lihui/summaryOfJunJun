@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>dialog</title>
+    <style>
+    body {
+        height: 2000px;
+    }
+
+    .box {
+        display: none;
+    }
+    </style>
+</head>
+
+<body>
+    <button>点击登录</button>
+    <button>点击关闭对话框</button>
+    <button>修改对话框 内容</button>
+    <div class="box">
+        <p>别担心，无账号自动注册不会导致手机号被泄露</p>
+        用户名：
+        <input type="text" name="username" value="">
+        <br>
+        <br> 密码：
+        <input type="password" name="password" value="">
+        <br>
+        <br> 验证码：
+        <input type="text" name="code">
+        <br>
+        <br>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/dialog.js"></script>
+    <script>
+    $(function() {
+        var d;
+        // 普通对话框
+        $('button:eq(0)').click(function() {
+            d = dialog({
+                // 对话框的标题
+                title: '请登录',
+                // 对话框的内容,通过jQuery对象快捷的获取页面的对象
+                content: $('.box'),
+
+                // 注意：这几个事件是dialog插件自定义的事件，不是系统的事件，以后js项目中肯定不能用这几个事件
+                // 当对话框展示的时候，执行的函数
+                onshow: function() {
+                    console.log('对话框展示');
+                },
+                //准备关闭的时候
+                onclose: function() {
+                    console.log('对话框关闭的时候');
+                },
+                // 删除之前
+                onbeforeremove: function() {
+                    console.log('在对话框删除之前');
+                },
+                // 删除的时候
+                onremove: function() {
+                    console.log('对话框删除');
+                }
+            });
+            // 展示对话框
+            d.show();
+        })
+
+        // 关闭对话框
+        $('button:eq(1)').click(function() {
+            d.close().remove();
+        })
+
+        // 修改对话框
+        $('button:eq(2)').click(function() {
+            d.content('<h3>hello world</h3>')
+            d.title('标题')
+        })
+    })
+    </script>
+</body>
+
+</html>

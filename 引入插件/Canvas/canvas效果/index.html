@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>html5网页特效</title>
+<style type="text/css">
+body{
+		background-color:#001111;
+	}
+
+	.box1{
+		position : absolute;
+		left : 670px;
+		top : 330px;
+		width : 50px;
+		height : 75px;
+	}
+	.box2{
+		position : absolute;
+		left : 200px;
+		top : 0px;
+	}
+	p{
+		clear : both;/*  清楚浮动动该元素的影响 , left ,right ,both */
+	}
+	.box3{
+		/*相对定位不会对周围元素的位置产生影响*/
+		position : absolute;/*相对定位：相对原来的位置*/
+		left : 880px;
+		top : 120px;
+		width : 30px;
+		height : 75px;
+	     }
+
+	.box5{
+		/*相对定位不会对周围元素的位置产生影响*/
+		position : absolute;/*相对定位：相对原来的位置*/
+		left : 410px;
+		top : 160px;
+		width : 50px;
+		height : 75px;
+            }
+
+        .box7{
+		/*相对定位不会对周围元素的位置产生影响*/
+		position : absolute;/*相对定位：相对原来的位置*/
+		left : 300px;
+		top : 320px;
+		width : 30px;
+		height : 75px;
+            }
+	
+       .box9{
+		/*相对定位不会对周围元素的位置产生影响*/
+		position : absolute;/*相对定位：相对原来的位置*/
+		left : 520px;
+		top : 420px;
+		width : 30px;
+		height : 75px;
+            }
+	.box4{
+		width : 200px;
+		height : 200px;
+		border: 1px solid red;
+		float: left;
+	}
+	
+	.box6{
+		position : absolute;
+		left : 210px;
+		top : 0px;
+		width : 800px;
+		height : 691px;
+	}
+	div{
+		position : absolute;
+		left : 0px;
+		top : 0px;
+	}
+</style>
+</head>  
+  
+<body>  
+
+<div class="box6">
+<img src="imgs/map3.png" id="image" width="800" height="685"/>
+</div>
+
+<script type="text/javascript">
+
+</script>
+<div>
+<canvas id="diagonal" width="1330" height="685"></canvas>
+</div>
+
+<script type="text/javascript">  
+
+Amount=1000;
+
+Ypos=new Array();
+Xpos=new Array();
+Yposss=new Array();
+Xposss=new Array();
+for (i=0; i < (Amount/6.5); i++){                                                    
+ Ypos[i] = Math.random()*800;
+ Xpos[i] = Math.random()*1400;
+}
+for (i=0; i < Amount; i++){ 
+ Yposss[i] = Math.random()*800;
+ Xposss[i] = -Math.random()*8400;
+}
+
+	function drawDiagonal1(){
+	context.clearRect(-8420,0,9824,802);
+               for(i=0;i<(Amount/6.5);i++){
+                context.fillStyle="#00CCFF";
+		context.beginPath();
+		context.moveTo(Xpos[i],Ypos[i]-6);
+		context.lineTo(Xpos[i]+5,Ypos[i]+5);
+		context.lineTo(Xpos[i]-5,Ypos[i]-2.5);
+		context.lineTo(Xpos[i]+5,Ypos[i]-2.5);
+		context.lineTo(Xpos[i]-5,Ypos[i]+5);
+		context.lineTo(Xpos[i],Ypos[i]-6);
+		context.strokeStyle='#00CCFF';
+		context.lineWidth=1.5;
+                context.stroke();
+                context.closePath();
+                context.fill();
+}
+              for(i=0;i<Amount;i++){
+                 context.fillStyle="#00CCFF";
+		context.beginPath();
+		context.moveTo(Xposss[i],Yposss[i]-6);
+		context.lineTo(Xposss[i]+5,Yposss[i]+5);
+		context.lineTo(Xposss[i]-5,Yposss[i]-2.5);
+		context.lineTo(Xposss[i]+5,Yposss[i]-2.5);
+		context.lineTo(Xposss[i]-5,Yposss[i]+5);
+		context.lineTo(Xposss[i],Yposss[i]-6);
+		context.strokeStyle='#00CCFF';
+		context.lineWidth=1.5;
+                context.stroke();
+                context.closePath();
+                context.fill();
+	}
+	var k=Math.random()*1.5;
+	context.translate(m,0);
+	setTimeout(drawDiagonal1,20);
+    
+	}
+
+    function drawDiagonal(){
+	context.clearRect(-8420,0,9824,802);
+
+	for(i=0;i<(Amount/6.5);i++){
+                context.fillStyle="#00CCFF";
+		context.beginPath();
+		context.moveTo(Xpos[i],Ypos[i]-9);
+		context.lineTo(Xpos[i]+7.5,Ypos[i]+7.5);
+		context.lineTo(Xpos[i]-7.5,Ypos[i]-3.75);
+		context.lineTo(Xpos[i]+7.5,Ypos[i]-3.75);
+		context.lineTo(Xpos[i]-7.5,Ypos[i]+7.5);
+		context.lineTo(Xpos[i],Ypos[i]-9);
+		context.strokeStyle='#00CCFF';
+		context.lineWidth=1.5;
+                context.stroke();
+                context.closePath();
+                context.fill();
+	}
+	for(i=0;i<Amount;i++){
+		context.fillStyle="#00CCFF";
+                context.beginPath();
+		context.moveTo(Xposss[i],Yposss[i]-9);
+		context.lineTo(Xposss[i]+7.5,Yposss[i]+7.5);
+		context.lineTo(Xposss[i]-7.5,Yposss[i]-3.75);
+		context.lineTo(Xposss[i]+7.5,Yposss[i]-3.75);
+		context.lineTo(Xposss[i]-7.5,Yposss[i]+7.5);
+		context.lineTo(Xposss[i],Yposss[i]-9);
+               context.strokeStyle='#00CCFF';
+		context.lineWidth=1.5;
+                context.stroke();
+                context.closePath();
+                context.fill();
+		
+	
+	}		
+
+	var k=Math.random()*1.5;
+	context.translate(k,0);
+
+	setTimeout(drawDiagonal,20);
+    }
+function d1(){
+	setInterval(drawDiagonal,20);
+}
+function d2(){
+	setInterval(drawDiagonal1,20);
+}
+	canvas=document.getElementById('diagonal');
+	context=canvas.getContext('2d');
+
+
+    function fun(){
+    	d1();
+		setTimeout(d2,300);
+	}
+    window.addEventListener("load",fun,true);
+</script> 
+<div class="box3">
+<a href="snow.htm" onMouseOver="fun1();">
+<img src="imgs/1.jpg" width="30px" height="75px"/>
+</a>
+</div>
+
+<div class="box1">
+<a href="Windmill.htm">
+<img src="imgs/3.jpg" width="50px" height="75px"/>
+</a>
+</div>
+
+<div class="box5">
+<a href="fireworks.htm">
+<img src="imgs/2.jpg" width="50px" height="75px"/>
+</a>
+</div> 
+
+<div class="box9">
+<a href="Raindrop.htm">
+<img src="imgs/4.jpg" width="50px" height="75px"/>
+</a>
+</div> 
+<audio autoplay="autoplay" loop="loop">
+  <source src="music\k.mp3" type="audio/mpeg">
+</audio>
+</body>  
+</html>

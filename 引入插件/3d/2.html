@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    body {
+        /*preserve-3d： 指定子元素定位在三维空间内 */
+        transform-style: preserve-3d;
+
+        /* 设置观察点距屏幕的距离 */
+        perspective: 500px;
+
+        /* 
+        	设置观察点的位置
+				固定值：
+					0 0:左上角
+					300px 300px:右上角
+				百分比
+				单词
+					left center right
+					top center bottom
+         */
+        perspective-origin: top right;
+    }
+
+    .box {
+        width: 300px;
+        height: 300px;
+        margin: 100px auto;
+        background-color: red;
+
+        transform: translateZ(0px);
+    }
+    </style>
+</head>
+
+<body>
+    <div class="box"></div>
+</body>
+
+</html>

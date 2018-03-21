@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../../lib/jquery-1.11.1/jquery.min.js"></script>
+	<style>	
+		.box{width: 500px;height: 200px;border:1px solid green;}
+	</style>
+</head>
+<body>
+	
+	<div class="box"></div>
+	<button>请求</button>
+
+
+	<script type="text/javascript">
+		
+		$('button').click(function(){
+			// ajax 的请求
+			// $('.box').load('./01.php');
+			// $('.box').load('./test.html');
+			// $('.box').load('./test.html #str');
+			$('.box').load('./test.html .a');
+
+		});
+
+	</script>	
+</body>
+</html>

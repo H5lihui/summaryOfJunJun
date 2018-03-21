@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>dialog</title>
+    <style>
+    body {
+        height: 2000px;
+    }
+
+    .box {
+        width: 200px;
+        height: 200px;
+        margin: 100px 300px;
+        background-color: yellow;
+    }
+    </style>
+</head>
+
+<body>
+    <button>点击弹出对话框</button>
+    <button>点击弹出模态框</button>
+    <button>点击弹出气泡浮层模态框</button>
+    <div class="box"></div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/dialog.js"></script>
+    <script>
+    $(function() {
+        // 普通对话框
+        $('button:eq(0)').click(function() {
+            var d = dialog({
+                // 对话框的标题
+                title: '欢迎来到H535期',
+                // 对话框的内容
+                content: '这是一个dialog对话框'
+            });
+            // 展示对话框
+            d.show();
+        })
+
+        // 模态对话框
+        $('button:eq(1)').click(function() {
+            var d = dialog({
+                title: 'message',
+                content: '<input autofocus />'
+            });
+            // 展示模态框
+            d.showModal();
+        })
+
+        // 气泡对话框
+        $('button:eq(2)').click(function() {
+            var d = dialog({
+                // title: 'message',
+                content: '<p>hello world</p>',
+                align: 'bottom'
+            });
+            // 展示
+            d.show(document.querySelector('.box'));
+        })
+    })
+    </script>
+</body>
+
+</html>

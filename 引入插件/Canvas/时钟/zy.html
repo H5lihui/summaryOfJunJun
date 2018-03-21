@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ment</title>
+<style type="text/css">
+</style>
+</head>
+<body>
+<canvas width="600" height="600" id="mycanvas"></canvas>
+<script type="text/javascript">
+var C = document.getElementById('mycanvas');
+// 获取 2d 的绘图环境
+var ctx = C.getContext('2d');
+
+var xArr = ['日','一','二','三','四','五','六'];
+
+function myclock(){
+	ctx.clearRect(0,0,C.width,C.height);
+
+    // 获取时间对象 
+	var myDate = new Date();
+	// 获取 秒
+	var s = myDate.getSeconds();
+	
+	// 获取 分
+	var ii = myDate.getMinutes()+s/60;
+	// 获取当前 的时 
+	var h24 = myDate.getHours()+ii/60;
+	// 转换成 12 进制
+	var h12 = h24>12?h24-12:h24;
+
+
+	// 获取 月 
+	var m = myDate.getMonth()+1;
+
+	// 获取 日期
+	var d = myDate.getDate()
+
+	// 获取 星期
+	var x = myDate.getDay()
+
+	// alert(x);
+
+	// 分刻度
+	// 保存状态
+	ctx.save();
+	ctx.translate(300,300)
+	ctx.lineWidth = 2;
+	ctx.strokeStyle = 'red';		
+	for(var i=0;i<60;i++){
+		ctx.rotate(Math.PI/180*6);
+		ctx.beginPath();
+		ctx.moveTo(190,0);
+		ctx.lineTo(200,0);
+		ctx.stroke();
+	}
+	// 恢复状态
+	ctx.restore();
+
+	// 时刻度
+	// 保存状态
+	ctx.save();
+	ctx.translate(300,300)
+	ctx.lineWidth = 5;
+	ctx.strokeStyle = '#494949';
+	// 循环 刻度 12 c次
+	for(var i=0;i<12;i++){
+		ctx.rotate(Math.PI/180*30);
+		ctx.beginPath();
+		ctx.moveTo(180,0)
+		ctx.lineTo(200,0)
+		ctx.stroke();
+	}
+	// 恢复状态
+	ctx.restore();
+
+
+	// 绘制表盘	
+	// 保存状态
+	ctx.save();
+	ctx.strokeStyle = '#494949';
+	ctx.lineWidth = 5;
+	ctx.beginPath();
+	ctx.arc(300,300,200,0,Math.PI*2,false);
+	ctx.stroke();
+	// 恢复状态
+	ctx.restore();
+
+
+	// 画时针
+	ctx.save()
+	ctx.translate(300,300);
+	ctx.rotate(Math.PI/180*(h12/12)*360);
+	ctx.lineWidth = 10;
+	ctx.strokeStyle = '#494949';
+	ctx.beginPath();
+	ctx.moveTo(0,20)	
+	ctx.lineTo(0,-120)
+	ctx.stroke();
+	// 恢复状态
+	ctx.restore();
+
+
+	// 画分针
+	ctx.save()
+	ctx.translate(300,300);
+	ctx.rotate(Math.PI/180*(ii/60)*360)
+	ctx.lineWidth = 5;
+	ctx.strokeStyle = 'green';
+	ctx.beginPath();
+	ctx.moveTo(0,20)	
+	ctx.lineTo(0,-140)
+	ctx.stroke(); 
+	// 恢复状态
+	ctx.restore();
+
+	// 画秒针
+	ctx.save()
+	// 坐标系平移
+	ctx.translate(300,300);
+	ctx.lineWidth = 3;
+	ctx.strokeStyle = 'red';
+	ctx.rotate(Math.PI/180*(s*6));
+	ctx.beginPath();
+	ctx.moveTo(0,30)	
+	ctx.lineTo(0,-170)
+	ctx.stroke(); 
+	// 恢复状态
+	ctx.restore();
+
+	// 表盘圆心
+	ctx.save();
+	// 坐标系平移
+	ctx.translate(300,300);			
+	ctx.fillStyle = '#000';
+	ctx.strokeStyle = 'red';
+	ctx.lineWidth = 5;
+	ctx.beginPath();
+	ctx.arc(0,0,10,0,Math.PI*2,false);
+	ctx.fill();
+	ctx.stroke();
+	// 恢复状态
+	ctx.restore();
+
+
+   //绘制数字
+	ctx.save()
+	ctx.translate(300,300);
+	var angle = 0;
+	var measureWidth = 0;
+	ctx.font = "25px 微软雅黑";
+	ctx.textBaseline = 'middle';
+	ctx.textAlign = 'center';
+	for (var i=1;i<13;i++){
+		// angle = Math.PI*2/12
+		angle = Math.PI/6*(i-3);
+		ctx.beginPath();
+		ctx.fillText(i,Math.cos(angle)*150,Math.sin(angle)*150);
+		ctx.closePath();
+	}
+	// 恢复状态
+	ctx.restore();
+
+
+	// 绘制日期
+	ctx.save()
+	ctx.translate(300,300);
+	ctx.fillStyle = 'red';
+	ctx.font = "15px 微软雅黑";
+	ctx.textBaseline = 'middle';
+	ctx.textAlign = 'center';
+	ctx.fillText(m+'/'+d,-100,0);
+	// 恢复状态
+	ctx.restore();
+
+	// 绘制星期
+	ctx.save()
+	ctx.translate(300,300);
+	ctx.fillStyle = 'red';
+	ctx.font = "15px 微软雅黑";
+	ctx.textBaseline = 'middle';
+	ctx.textAlign = 'center';
+	ctx.fillText('星期'+xArr[x],100,0);
+	// 恢复状态
+	ctx.restore();
+
+
+	// 绘制星期边框
+	ctx.save()
+	ctx.translate(300,300);
+	ctx.strokeStyle = 'green';	
+	ctx.strokeRect(75,-10,50,20)
+	// 恢复状态
+	ctx.restore();		
+
+	// 绘制日期边框
+	ctx.save()
+	ctx.translate(300,300);
+	ctx.strokeStyle = 'green';	
+	ctx.strokeRect(-125,-10,50,20)
+	// 恢复状态
+	ctx.restore();	
+
+
+	// 绘制品牌
+	ctx.save()
+	ctx.translate(300,300);
+	ctx.fillStyle = 'red';
+	ctx.font = "15px 微软雅黑";
+	ctx.textBaseline = 'middle';
+	ctx.textAlign = 'center';
+	ctx.fillText('simon',0,100);
+	// 恢复状态
+	ctx.restore();
+
+}	
+
+	myclock();
+setInterval(myclock,1000);
+
+
+
+</script>
+</body>
+</html>

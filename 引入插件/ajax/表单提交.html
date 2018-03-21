@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    table {
+        width: 900px;
+        height: 300px;
+        border: 1px solid #333;
+        table-layout: fixed;
+    }
+
+    table tr td,
+    table tr th {    
+        border: 1px solid #333;
+        border-collapse: collapse;
+    }
+
+    .success {
+        border: 1px solid green;
+        color: green;
+        background-color: rgba(0, 255, 0, .4);
+    }
+
+    .success td span::before {
+        content: "";
+        display: inline-block;
+        width: 24px;
+        height: 22px;
+        background: url(sprite.png) -26px -98px;
+        ;
+    }
+
+    .error {
+        border: 1px solid red;
+        color: red;
+        background-color: rgba(255, 0, 0, .4);
+    }
+
+    .error td span::before {
+        content: "";
+        display: inline-block;
+        width: 24px;
+        height: 22px;
+        background: url(sprite.png) -62px -98px;
+        ;
+    }
+    </style>
+</head>
+
+<body>
+    <form action="1.php" method="post">
+        <table>
+            <tr>
+                <th>用户名：</th>
+                <td>
+                    <input class="username" type="text" name="username" value="">
+                </td>  
+                <td>
+                    <span class="umsg"></span>
+                </td>
+            </tr>
+            <tr>
+                <th>密码：</th>
+                <td>
+                    <input type="text" name="username" value="">
+                </td>
+                <td>
+                    <span></span>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <script src="dist/js/jquery.min.js"></script>
+    <script>
+    $(function() { 
+        /*
+        当用户名失去焦点的额时候，验证用户名是否正确
+            1. 请用字母数字下划线命名
+            2. 账号必须由字母开头
+            3. 账号必须是6-18个字符
+            4. 该账户已注册
+        */
+        $('.username').blur(function() {
+            // 1.获取用户输入的值
+            // 删除字符串两遍的空格
+            // $.trim():jQuery封装的方法
+            // str.trim():原生JS方法
+            var value = $(this).val().trim();
+
+            // 2.请用至少一个字母数字下划线命名
+            var reg1 = /^\w+$/;
+            if (!reg1.test(value)) {
+                // 检验不通过  
+                $('.umsg').html('请用字母数字下划线命名');
+                // 给当前input的爷爷tr增加错误的class
+                $(this).parents('tr').addClass('error');
+
+                // 验证不通过，没有必要继续往下进行
+                return false;
+            }
+
+            // 3.必须以字母开头，至少一个
+            var reg2 = /^[a-zA-Z]+/;
+            if (!reg2.test(value)) {
+                $('.umsg').html('账号必须由字母开头');
+                // 给当前input的爷爷tr增加错误的class
+                $(this).parents('tr').addClass('error');
+
+
+                // 验证不通过，没有必要继续往下进行
+                return false;
+            }
+
+            // 4.账号必须是6-18个字符
+            var reg3 = /^\w{6,18}$/;
+            if (!reg3.test(value)) {
+                $('.umsg').html('账号必须是6-18个字符');
+                // 给当前input的爷爷tr增加错误的class
+                $(this).parents('tr').addClass('error');
+
+
+                // 验证不通过，没有必要继续往下进行
+                return false;
+            }
+
+            // 4.判断用户名是否被注册 - 发送ajax
+            /*
+            原生JS自己的封装
+                get(url,callback)
+                post(url,data,callback)
+            jQuery的ajax  
+                $.get(url, data, callback, dataType)
+                $.post(url, data, callback, dataType)
+            */
+            // $(this)绝对不可以跨函数使用
+            var that = $(this);
+
+            $.post('php/reg.php', { username: value }, function(msg) {
+                // 返回的数据是{success: 1}对象
+                if (msg.success == 1) {
+                    $('.umsg').html('用户已注册');
+                    // 给当前input的爷爷tr增加错误的class
+                    that.parents('tr').addClass('error');
+
+                } else {
+                    $('.umsg').html('用户名可用');
+                    // 给当前input的爷爷tr增加错误的class
+                    that.parents('tr').addClass('success');
+
+                }
+            }, 'json');
+
+        })
+    })
+    </script>
+</body>
+
+</html>
